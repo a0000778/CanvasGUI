@@ -44,13 +44,13 @@ CanvasGUIDrawInputText.prototype.eventFirstDraw=function(){
 			'margin':0,
 			'opacity':0,
 			'padding':0,
-			'position':'relative',
+			'position':'absolute',
 			'zIndex':-1,
 			
 			'left':this.drawX,
 			'top':this.drawY
 		}
-	},this.domObj);
+	});
 	this.domInput.addEventListener('input',function(e){
 		thisobj.eventInput(e,this);
 		if(this.clientWidth<thisobj.canvasObj.measureText(thisobj.text).width)

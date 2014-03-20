@@ -1,5 +1,6 @@
 /*
 CanvasGUI 圖形介面繪製函式庫(HTML5) by a0000778
+授權 CC-BY-3.0
 */
 function CanvasGUI(createAt,config){
 	var thisobj=this;
@@ -23,7 +24,15 @@ function CanvasGUI(createAt,config){
 	
 	//建立canvas元素，並掛上相關事件
 	this.domParent=createAt;
+	this.domParent.style.position='relative';
+	this.domParent.style.left='0px';
+	this.domParent.style.top='0px';
+	this.domParent.style.width=this.config.width+'px';
+	this.domParent.style.height=this.config.height+'px';
 	this.domObj=document.createElement('canvas');
+	this.domObj.style.position='absolute';
+	this.domObj.style.left='0px';
+	this.domObj.style.top='0px';
 	this.domObj.setAttribute('width',this.config.width);
 	this.domObj.setAttribute('height',this.config.height);
 	this.domObj.addEventListener('contextmenu',function(e){e.preventDefault();});//停用右鍵選單
