@@ -152,6 +152,26 @@ CanvasGUI.prototype.statusUpdate=function(){
 	this.status.fpsCountScreen=0;
 	this.status.fpsUpdateTime=nowTime;
 }
+CanvasGUI.prototype.screenToURL=function(type){
+	var type=type? type:'blob';
+	var dataURL=this.domObj.toDataURL();
+	switch(type){
+		case 'blob':
+			dataURL=dataURL.match(/data:([^;]*)(;base64)?,([0-9A-Za-z+/]+)/);
+			var binData=atob(dataURL[3]);
+			var view=new Uint8Array(binData.length);
+			var at=0;
+			while(at<view.length){
+				view[at] = binData.charCodeAt(at++);
+			}
+			var blob=new Blob([view], {'type': dataURL[1]});
+			return URL.createObjectURL(blob);
+		break;
+		case 'dataurl':
+			return dataURL;
+		break;
+	}
+}
 
 function CanvasGUIDrawGroup(){
 	this.domParent=null;
