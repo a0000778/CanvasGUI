@@ -13,7 +13,7 @@ function CanvasGUIDrawInputText(drawX,drawY,defaultText,size,color,font){
 	this.domInput=null;//實際輸入物件
 	this.text=(defaultText? defaultText:'');
 	this.color=(color? color:'#000000');
-	this.font=(font? font:'');
+	this.font=(font? font:'文泉驛微米黑, 黑體-繁, 新細明體');
 	this.size=(size? size:12);
 	
 	this.status={
