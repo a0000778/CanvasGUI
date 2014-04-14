@@ -10,6 +10,7 @@ function CanvasGUI(createAt,config){
 		'width': 800,//畫面寬度
 		'height': 600,//畫面高度
 		'bgColor': '#000000',//基底顏色
+		'fps': 60//目標刷新頻率
 	};
 	if(typeof config=='object'){
 		for(i in config){
@@ -130,6 +131,13 @@ CanvasGUI.prototype.eventMouseClick=function(e){
 }
 CanvasGUI.prototype.screenUpdate=function(){
 	var nowTime=new Date().getTime();
+	var thisobj=this;
+	this.update.screen=requestAnimationFrame(function(){thisobj.screenUpdate();});
+	
+	//調整實際FPS
+	if(this.status.fpsCountScreen*1000/(nowTime-this.status.fpsUpdateTime)>this.config.fps)
+		return;
+	
 	//清空畫面
 	this.obj.fillStyle=this.config.bgColor;
 	this.obj.fillRect(0,0,this.config.width,this.config.height);
@@ -142,8 +150,6 @@ CanvasGUI.prototype.screenUpdate=function(){
 	}
 	
 	this.status.fpsCountScreen++;
-	var thisobj=this;
-	this.update.screen=requestAnimationFrame(function(){thisobj.screenUpdate();});
 }
 CanvasGUI.prototype.statusUpdate=function(){
 	//更新fps資料
