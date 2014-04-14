@@ -33,7 +33,11 @@ function CanvasGUIDrawInputText(drawX,drawY,defaultText,size,color,font){
 CanvasGUIDrawInputText.prototype.draw=function(canvasObj,nowTime){
 	if(!this.status.draw) return;
 	this.configStyle(canvasObj);
-	canvasObj.fillText(this.text+((this.status.inputing && nowTime%1000>=500)? '|':' '),this.drawX,this.drawY);
+	if(this.domInput.selectionStart===0)
+		canvasObj.fillText(((this.status.inputing && nowTime%1000>=500)? '|':'  ')+this.text,this.drawX,this.drawY);
+	else if(this.domInput.selectionStart===this.domInput.value.length)
+		canvasObj.fillText(this.text+((this.status.inputing && nowTime%1000>=500)? '|':''),this.drawX,this.drawY);
+	else canvasObj.fillText(this.text.substring(0,this.domInput.selectionStart)+((this.status.inputing && nowTime%1000>=500)? '|':'  ')+this.text.substring(this.domInput.selectionStart,this.domInput.length),this.drawX,this.drawY);
 }
 CanvasGUIDrawInputText.prototype.eventFirstDraw=function(){
 	var thisobj=this;
