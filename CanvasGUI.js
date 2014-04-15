@@ -319,25 +319,19 @@ CanvasGUIDrawGroup.prototype.on=function(eventName,func){
 	this.event[eventName].push(func);
 }
 
-function CanvasGUIDrawLine(sx,sy,ex,ey,color,width){
-	if(sx<=ex){
-		this.drawX=sx;
-		this.startX=0;
-		this.endX=ex-sx;
-	}else{
-		this.drawX=ex;
-		this.startX=sx-ex;
-		this.endX=0
-	}
-	if(sy<=ey){
-		this.drawY=sy;
-		this.startY=0;
-		this.endY=ey-sy;
-	}else{
-		this.drawY=ey;
-		this.startY=sy-ey;
-		this.endY=0
-	}
+function CanvasGUIDrawLine(position,color,width){
+	this.drawX=position[0].x;
+	this.drawY=position[0].y;
+	this.position=position;
+	this.slope=[];
+	this.position.forEach(function(p,k,o){
+		if(p.x<this.drawX) this.drawX=p.x;
+		if(p.y<this.drawY) this.drawY=p.y;
+	},this);
+	this.position.forEach(function(p){
+		p.x-=this.drawX;
+		p.y-=this.drawY;
+	},this);
 	this.color=color;
 	this.width=width;
 	this.status={
@@ -357,8 +351,10 @@ CanvasGUIDrawLine.prototype.draw=function(canvasObj){
 	canvasObj.lineWidth=this.width;
 	canvasObj.strokeStyle=this.color;
 	canvasObj.beginPath();
-	canvasObj.moveTo(this.drawX+this.startX,this.drawY+this.startY);
-	canvasObj.lineTo(this.drawX+this.endX,this.drawY+this.endY);
+	canvasObj.moveTo(this.drawX+this.position[0].x,this.drawY+this.position[0].y);
+	var process=0;
+	while(++process<this.position.length)
+		canvasObj.lineTo(this.drawX+this.position[process].x,this.drawY+this.position[process].y);
 	canvasObj.stroke();
 	canvasObj.closePath();
 }
